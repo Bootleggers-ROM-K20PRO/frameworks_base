@@ -375,7 +375,7 @@ public class FODCircleView extends ImageView implements ConfigurationListener, T
         setKeepScreenOn(true);
 
         if (mIsDreaming) {
-            mWakeLock.acquire(300);
+            mWakeLock.acquire(700);
         }
 
 
