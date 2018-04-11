@@ -20,7 +20,12 @@ import static android.app.StatusBarManager.DISABLE2_QUICK_SETTINGS;
 import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
 
 import android.content.Context;
+import android.content.ContentResolver;
 import android.content.res.Configuration;
+import android.database.ContentObserver;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.TransitionDrawable;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
@@ -61,6 +66,7 @@ public class QSContainerImpl extends FrameLayout implements
 
     private int mSideMargins;
     private boolean mQsDisabled;
+    private Drawable mQsBackGround;
 
     // omni additions start
     private boolean mHeaderImageEnabled;
@@ -73,6 +79,9 @@ public class QSContainerImpl extends FrameLayout implements
     public QSContainerImpl(Context context, AttributeSet attrs) {
         super(context, attrs);
         mStatusBarHeaderMachine = new StatusBarHeaderMachine(context);
+        Handler mHandler = new Handler();
+        SettingsObserver mSettingsObserver = new SettingsObserver(mHandler);
+        mSettingsObserver.observe();
     }
 
     @Override
@@ -81,12 +90,14 @@ public class QSContainerImpl extends FrameLayout implements
         mQSPanel = findViewById(R.id.quick_settings_panel);
         mQSDetail = findViewById(R.id.qs_detail);
         mHeader = findViewById(R.id.header);
-        mQSCustomizer = findViewById(R.id.qs_customize);
+        mQSCustomizer = (QSCustomizer) findViewById(R.id.qs_customize);
         mQSFooter = findViewById(R.id.qs_footer);
         mBackground = findViewById(R.id.quick_settings_background);
         mStatusBarBackground = findViewById(R.id.quick_settings_status_bar_background);
         mBackgroundGradient = findViewById(R.id.quick_settings_gradient_view);
         mSideMargins = getResources().getDimensionPixelSize(R.dimen.notification_side_paddings);
+        mQsBackGround = getContext().getDrawable(R.drawable.qs_background_primary);
+        updateSettings();
 
         mBackgroundImage = findViewById(R.id.qs_header_image_view);
         mBackgroundImage.setClipToOutline(true);
@@ -125,6 +136,41 @@ public class QSContainerImpl extends FrameLayout implements
         updateResources();
         updateStatusbarVisibility();
         mSizePoint.set(0, 0); // Will be retrieved on next measure pass.
+    }
+
+    private class SettingsObserver extends ContentObserver {
+        SettingsObserver(Handler handler) {
+            super(handler);
+        }
+
+        void observe() {
+            ContentResolver resolver = getContext().getContentResolver();
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.QS_PANEL_BG_ALPHA), false, this,
+                    UserHandle.USER_ALL);
+        }
+
+        @Override
+        public void onChange(boolean selfChange) {
+            updateSettings();
+        }
+    }
+
+    private void updateSettings() {
+        ContentResolver resolver = getContext().getContentResolver();
+        int mQsBackGroundAlpha = Settings.System.getIntForUser(resolver,
+                Settings.System.QS_PANEL_BG_ALPHA, 255,
+                UserHandle.USER_CURRENT);
+
+        if (mQsBackGroundAlpha < 255 ) {
+            mBackground.setVisibility(View.INVISIBLE);
+            mBackgroundGradient.setVisibility(View.INVISIBLE);
+            mQsBackGround.setAlpha(mQsBackGroundAlpha);
+            setBackground(mQsBackGround);
+        } else {
+            mBackground.setVisibility(View.VISIBLE);
+            mBackgroundGradient.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
