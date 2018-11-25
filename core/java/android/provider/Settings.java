@@ -9932,6 +9932,82 @@ public final class Settings {
         public static final String QS_SHOW_BRIGHTNESS_SLIDER = "qs_show_brightness_slider";
 
         /**
+         * Show or hide clock seconds
+         * 0 - hide
+         * 1 - show (default)
+         * @hide
+         */
+        public static final String STATUSBAR_CLOCK_SECONDS = "status_bar_clock_seconds";
+        /** @hide */
+        private static final Validator STATUSBAR_CLOCK_SECONDS_VALIDATOR =
+                 BOOLEAN_VALIDATOR;
+
+         /**
+         * Show or hide clock
+         * 0 - hide
+         * 1 - show (default)
+         * @hide
+         */
+        public static final String STATUS_BAR_CLOCK = "status_bar_clock";
+        /** @hide */
+        private static final Validator STATUS_BAR_CLOCK_VALIDATOR =
+                 BOOLEAN_VALIDATOR;
+
+        /**
+         * AM/PM Style for clock options
+         * 0 - Normal AM/PM
+         * 1 - Small AM/PM
+         * 2 - No AM/PM  (default)
+         * @hide
+         */
+        public static final String STATUSBAR_CLOCK_AM_PM_STYLE = "statusbar_clock_am_pm_style";
+        /** @hide */
+        private static final Validator STATUSBAR_CLOCK_AM_PM_STYLE_VALIDATOR =
+                new SettingsValidators.InclusiveIntegerRangeValidator(0, 2);
+        /**
+         * Shows custom date before clock time
+         * 0 - No Date
+         * 1 - Small Date
+         * 2 - Normal Date
+         * @hide
+         */
+        public static final String STATUSBAR_CLOCK_DATE_DISPLAY = "statusbar_clock_date_display";
+        /** @hide */
+        private static final Validator STATUSBAR_CLOCK_DATE_DISPLAY_VALIDATOR =
+                new SettingsValidators.InclusiveIntegerRangeValidator(0, 2);
+
+        /**
+         * Sets the date string style
+         * 0 - Regular style
+         * 1 - Lowercase
+         * 2 - Uppercase
+         * @hide
+         */
+        public static final String STATUSBAR_CLOCK_DATE_STYLE = "statusbar_clock_date_style";
+        /** @hide */
+        private static final Validator STATUSBAR_CLOCK_DATE_STYLE_VALIDATOR =
+                new SettingsValidators.InclusiveIntegerRangeValidator(0, 2);
+
+        /**
+         * Stores the java DateFormat string for the date
+         * @hide
+         */
+        public static final String STATUSBAR_CLOCK_DATE_FORMAT = "statusbar_clock_date_format";
+        /** @hide */
+        private static final Validator STATUSBAR_CLOCK_DATE_FORMAT_VALIDATOR = ANY_STRING_VALIDATOR;
+
+        /**
+         * Position of date
+         * 0 - Left of clock
+         * 1 - Right of clock
+         * @hide
+         */
+        public static final String STATUSBAR_CLOCK_DATE_POSITION = "statusbar_clock_date_position";
+         /** @hide */
+        private static final Validator STATUSBAR_CLOCK_DATE_POSITION_VALIDATOR =
+                new SettingsValidators.InclusiveIntegerRangeValidator(0, 1);
+
+        /**
          * This are the settings to be backed up.
          *
          * NOTE: Settings are backed up and restored in the order they appear
@@ -10076,6 +10152,12 @@ public final class Settings {
             GLOBAL_ACTIONS_PANEL_ENABLED,
             AWARE_LOCK_ENABLED,
             ADVANCED_REBOOT
+            STATUSBAR_CLOCK_SECONDS,
+            STATUS_BAR_CLOCK,
+            STATUSBAR_CLOCK_AM_PM_STYLE,
+            STATUSBAR_CLOCK_DATE_DISPLAY,
+            STATUSBAR_CLOCK_DATE_STYLE,
+            STATUSBAR_CLOCK_DATE_FORMAT,
         };
 
         /**
@@ -10275,6 +10357,12 @@ public final class Settings {
             VALIDATORS.put(GLOBAL_ACTIONS_PANEL_ENABLED, GLOBAL_ACTIONS_PANEL_ENABLED_VALIDATOR);
             VALIDATORS.put(AWARE_LOCK_ENABLED, AWARE_LOCK_ENABLED_VALIDATOR);
             VALIDATORS.put(ADVANCED_REBOOT, ADVANCED_REBOOT_VALIDATOR);
+            VALIDATORS.put(STATUS_BAR_CLOCK, STATUS_BAR_CLOCK_VALIDATOR);
+            VALIDATORS.put(STATUSBAR_CLOCK_SECONDS, STATUSBAR_CLOCK_SECONDS_VALIDATOR);
+            VALIDATORS.put(STATUSBAR_CLOCK_AM_PM_STYLE, STATUSBAR_CLOCK_AM_PM_STYLE_VALIDATOR);
+            VALIDATORS.put(STATUSBAR_CLOCK_DATE_STYLE, STATUSBAR_CLOCK_DATE_STYLE_VALIDATOR);
+            VALIDATORS.put(STATUSBAR_CLOCK_DATE_FORMAT, STATUSBAR_CLOCK_DATE_FORMAT_VALIDATOR);
+            VALIDATORS.put(STATUSBAR_CLOCK_DATE_DISPLAY, STATUSBAR_CLOCK_DATE_DISPLAY_VALIDATOR);
         }
 
         /**
