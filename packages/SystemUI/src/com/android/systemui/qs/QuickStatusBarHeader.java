@@ -61,6 +61,7 @@ import androidx.annotation.VisibleForTesting;
 import com.android.internal.config.sysui.SystemUiDeviceConfigFlags;
 import com.android.settingslib.Utils;
 import com.android.systemui.BatteryMeterView;
+import com.android.systemui.Dependency;
 import com.android.systemui.DualToneHandler;
 import com.android.systemui.R;
 import com.android.systemui.plugins.ActivityStarter;
@@ -80,6 +81,8 @@ import com.android.systemui.statusbar.policy.Clock;
 import com.android.systemui.statusbar.policy.DateView;
 import com.android.systemui.statusbar.policy.NextAlarmController;
 import com.android.systemui.statusbar.policy.ZenModeController;
+import com.android.systemui.tuner.TunerService;
+import com.android.systemui.tuner.TunerService.Tunable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,7 +99,7 @@ import javax.inject.Named;
  */
 public class QuickStatusBarHeader extends RelativeLayout implements
         View.OnClickListener, NextAlarmController.NextAlarmChangeCallback,
-        ZenModeController.Callback {
+        ZenModeController.Callback, Tunable {
     private static final String TAG = "QuickStatusBarHeader";
     private static final boolean DEBUG = false;
 
@@ -532,6 +535,9 @@ public class QuickStatusBarHeader extends RelativeLayout implements
         super.onAttachedToWindow();
         mStatusBarIconController.addIconGroup(mIconManager);
         requestApplyInsets();
+
+        final TunerService tunerService = Dependency.get(TunerService.class);
+        tunerService.addTunable(this, StatusBarIconController.ICON_BLACKLIST);
     }
 
     @Override
@@ -699,6 +705,14 @@ public class QuickStatusBarHeader extends RelativeLayout implements
             RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) v.getLayoutParams();
             lp.leftMargin = sideMargins;
             lp.rightMargin = sideMargins;
+        }
+    }
+
+   @Override
+    public void onTuningChanged(String key, String newValue) {
+        if (StatusBarIconController.ICON_BLACKLIST.equals(key)) {
+            mClockView.setClockVisibleByUser(!StatusBarIconController.getIconBlacklist(newValue)
+                    .contains("clock"));
         }
     }
 
