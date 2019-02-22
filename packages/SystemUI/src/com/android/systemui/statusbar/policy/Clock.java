@@ -480,7 +480,7 @@ public class Clock extends TextView implements DemoMode, CommandQueue.Callbacks,
 
         String result = sdf.format(mCalendar.getTime());
 
-        if (mClockDateDisplay != CLOCK_DATE_DISPLAY_GONE) {
+        if (!mQsHeader && mClockDateDisplay != CLOCK_DATE_DISPLAY_GONE) {
             Date now = new Date();
 
             String clockDateFormat = Settings.System.getString(getContext().getContentResolver(),
