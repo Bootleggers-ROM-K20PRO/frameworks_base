@@ -5807,6 +5807,26 @@ public final class Settings {
         public static final String STABILIZATION_VELOCITY_AMPLITUDE = "stabilization_velocity_amplitude";
 
         /**
+         * User definable value of pulse notification screen brightness
+         *
+         * @hide
+         */
+        public static final String PULSE_BRIGHTNESS = "pulse_brightness";
+
+        /** @hide */
+        private static final Validator PULSE_BRIGHTNESS_VALIDATOR = ANY_INTEGER_VALIDATOR;
+
+        /**
+         * User definable value of aod screen brightness
+         *
+         * @hide
+         */
+        public static final String DOZE_BRIGHTNESS = "doze_brightness";
+
+        /** @hide */
+        private static final Validator DOZE_BRIGHTNESS_VALIDATOR = ANY_INTEGER_VALIDATOR;
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
@@ -5934,6 +5954,8 @@ public final class Settings {
             PULSE_AMBIENT_LIGHT_PULSE_FOR_ALL_REPEAT,
             PULSE_AMBIENT_LIGHT_LAYOUT,
             CHARGING_ANIMATION,
+            PULSE_BRIGHTNESS,
+            DOZE_BRIGHTNESS,
         };
 
         /**
@@ -6157,6 +6179,8 @@ public final class Settings {
             PRIVATE_SETTINGS.add(SHOW_VOLTE_ICON);
             PRIVATE_SETTINGS.add(VOLTE_ICON_STYLE);
             PRIVATE_SETTINGS.add(CHARGING_ANIMATION);
+            PRIVATE_SETTINGS.add(PULSE_BRIGHTNESS);
+            PRIVATE_SETTINGS.add(DOZE_BRIGHTNESS);
         }
 
         /**
@@ -6332,6 +6356,8 @@ public final class Settings {
             VALIDATORS.put(SHOW_VOLTE_ICON, SHOW_VOLTE_ICON_VALIDATOR);
             VALIDATORS.put(VOLTE_ICON_STYLE, VOLTE_ICON_STYLE_VALIDATOR);
             VALIDATORS.put(CHARGING_ANIMATION, CHARGING_ANIMATION_VALIDATOR);
+            VALIDATORS.put(PULSE_BRIGHTNESS, PULSE_BRIGHTNESS_VALIDATOR);
+            VALIDATORS.put(DOZE_BRIGHTNESS, DOZE_BRIGHTNESS_VALIDATOR);
         }
 
         /**
