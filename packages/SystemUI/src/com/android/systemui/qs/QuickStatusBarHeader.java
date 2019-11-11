@@ -709,14 +709,13 @@ public class QuickStatusBarHeader extends RelativeLayout implements
         mHeaderImageEnabled = Settings.System.getIntForUser(getContext().getContentResolver(),
                 Settings.System.STATUS_BAR_CUSTOM_HEADER, 0,
                 UserHandle.USER_CURRENT) == 1;
-        updateResources();
-        updateStatusbarProperties();
         updateQSBatteryMode();
         updateSBBatteryStyle();
-
+        updateResources();
+        updateStatusbarProperties();
     }
 
-    private void updateQSBatteryMode() {
+     private void updateQSBatteryMode() {
         int showEstimate = Settings.System.getInt(mContext.getContentResolver(),
         Settings.System.QS_BATTERY_MODE, 0);
         if (showEstimate == 0) {
@@ -728,7 +727,7 @@ public class QuickStatusBarHeader extends RelativeLayout implements
         } else if (showEstimate == 2) {
             mBatteryRemainingIcon.mShowBatteryPercent = 1;
             mBatteryRemainingIcon.setPercentShowMode(BatteryMeterView.MODE_OFF);
-        } else if (showEstimate == 3) {
+        } else if (showEstimate == 3 || showEstimate == 4) {
             mBatteryRemainingIcon.mShowBatteryPercent = 0;
             mBatteryRemainingIcon.setPercentShowMode(BatteryMeterView.MODE_ESTIMATE);
         }
