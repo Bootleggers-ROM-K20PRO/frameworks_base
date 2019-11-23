@@ -528,6 +528,8 @@ public class StatusBar extends SystemUI implements DemoMode,
     private boolean blurperformed = false;
     private int mBlurRadius;
 
+    private boolean mChargingAnimation;
+
     private final BroadcastReceiver mWallpaperChangedReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -4590,6 +4592,9 @@ public class StatusBar extends SystemUI implements DemoMode,
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.GAMING_MODE_HEADSUP_TOGGLE),
                     false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.LOCKSCREEN_CHARGING_ANIMATION),
+                    false, this, UserHandle.USER_ALL);
         }
 
         @Override
@@ -4618,6 +4623,9 @@ public class StatusBar extends SystemUI implements DemoMode,
                 setQSblurRadius();
             } else if (uri.equals(Settings.System.getUriFor(Settings.System.LESS_BORING_HEADS_UP))) {
                 setUseLessBoringHeadsUp();
+            } else if (uri.equals(Settings.System.getUriFor(
+                    Settings.System.LOCKSCREEN_CHARGING_ANIMATION))) {
+                updateChargingAnimation();
             }
             update();
         }
@@ -4634,6 +4642,15 @@ public class StatusBar extends SystemUI implements DemoMode,
             setQSblurRadius();
             setUseLessBoringHeadsUp();
             setGamingMode();
+            updateChargingAnimation();
+        }
+    }
+
+    private void updateChargingAnimation() {
+        mChargingAnimation = Settings.System.getIntForUser(mContext.getContentResolver(),
+                Settings.System.LOCKSCREEN_CHARGING_ANIMATION, 0, UserHandle.USER_CURRENT) == 1;
+        if (mKeyguardIndicationController != null) {
+            mKeyguardIndicationController.updateChargingIndication(mChargingAnimation);
         }
     }
 
