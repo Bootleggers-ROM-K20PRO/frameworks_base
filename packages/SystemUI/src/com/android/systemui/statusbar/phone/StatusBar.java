@@ -125,6 +125,7 @@ import android.view.WindowManager;
 import android.view.WindowManagerGlobal;
 import android.view.accessibility.AccessibilityManager;
 import android.view.animation.AccelerateInterpolator;
+import android.widget.FrameLayout;
 import android.widget.DateTimeView;
 import android.widget.ImageView;
 import android.widget.ImageButton;
