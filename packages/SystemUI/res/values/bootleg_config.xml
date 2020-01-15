@@ -31,4 +31,8 @@
 
     <!-- Asus stitch editor component name -->
     <string name="config_stitchEditor">com.asus.stitchimage/com.asus.stitchimage.editor.ScreenshotEditorActivity</string>
+
+    <!-- Whether the binned brightness sensor reports a value of 0 on proximity
+         near events -->
+    <bool name="doze_brightness_sensor_reports_proximity" translatable="false">true</bool>
 </resources>
