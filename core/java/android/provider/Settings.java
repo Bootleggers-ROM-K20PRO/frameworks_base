@@ -5850,6 +5850,14 @@ public final class Settings {
         private static final Validator QS_BLUR_ALPHA_VALIDATOR = ANY_INTEGER_VALIDATOR;
 
         /**
+         * QS blur alpha
+         * @hide
+         */
+        public static final String QS_BLUR_INTENSITY = "qs_blur_intensity";
+        /** @hide */
+        private static final Validator QS_BLUR_INTENSITY_VALIDATOR = ANY_INTEGER_VALIDATOR;
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
@@ -5988,6 +5996,7 @@ public final class Settings {
             DOZE_BRIGHTNESS,
             QS_BLUR,
             QS_BLUR_ALPHA,
+            QS_BLUR_INTENSITY,
         };
 
         /**
@@ -6405,6 +6414,7 @@ public final class Settings {
             VALIDATORS.put(DOZE_BRIGHTNESS, DOZE_BRIGHTNESS_VALIDATOR);
             VALIDATORS.put(QS_BLUR, QS_BLUR_VALIDATOR);
             VALIDATORS.put(QS_BLUR_ALPHA, QS_BLUR_ALPHA_VALIDATOR);
+            VALIDATORS.put(QS_BLUR_INTENSITY, QS_BLUR_INTENSITY_VALIDATOR);
         }
 
         /**
