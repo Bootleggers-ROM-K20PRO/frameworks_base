@@ -42,4 +42,7 @@
         <dimen name="status_bar_mobile_signal_with_type_width">22dp</dimen>
         <dimen name="status_bar_mobile_signal_width">16dp</dimen>
         <dimen name="status_bar_mobile_type_height">10dp</dimen>
+
+    <dimen name="fod_animation_size">280dp</dimen>
+
 </resources>
