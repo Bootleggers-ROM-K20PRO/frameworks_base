@@ -15,4 +15,9 @@
     <color name="quick_settings_status_bar_background_color">#ff000000</color>
 
     <color name="qs_tile_background_color_disabled">#1f1f1f</color>
+
+    <!-- Partial screenshot -->
+    <color name="screenshot_partial_layout_background">#20000000</color>
+    <color name="screenshot_partial_capture_background">@*android:color/accent_device_default</color>
+    <color name="screenshot_partial_cancel_background">#a0000000</color>
 </resources>
