@@ -5194,6 +5194,15 @@ public final class Settings {
         private static final Validator AMBIENT_NOTIFICATION_LIGHT_ACCENT_RIGHT_VALIDATOR = BOOLEAN_VALIDATOR;
 
         /**
+         * Whether to repeat edge light pulsing for all doze events
+         * @hide
+         */
+        public static final String PULSE_AMBIENT_LIGHT_PULSE_FOR_ALL_REPEAT = "pulse_ambient_light_pulse_for_all_repeat";
+
+        /** @hide */
+        private static final Validator PULSE_AMBIENT_LIGHT_PULSE_FOR_ALL_REPEAT_VALIDATOR = BOOLEAN_VALIDATOR;
+
+        /**
          * Manual override picture to use
          * @hide
          */
@@ -5845,6 +5854,7 @@ public final class Settings {
             PULSE_AMBIENT_LIGHT_PULSE_FOR_ALL,
             AMBIENT_NOTIFICATION_LIGHT_ACCENT_LEFT,
             AMBIENT_NOTIFICATION_LIGHT_ACCENT_RIGHT,
+            PULSE_AMBIENT_LIGHT_PULSE_FOR_ALL_REPEAT,
         };
 
         /**
@@ -6061,6 +6071,7 @@ public final class Settings {
             PRIVATE_SETTINGS.add(PULSE_AMBIENT_LIGHT_PULSE_FOR_ALL);
             PRIVATE_SETTINGS.add(AMBIENT_NOTIFICATION_LIGHT_ACCENT_LEFT);
             PRIVATE_SETTINGS.add(AMBIENT_NOTIFICATION_LIGHT_ACCENT_RIGHT);
+            PRIVATE_SETTINGS.add(PULSE_AMBIENT_LIGHT_PULSE_FOR_ALL_REPEAT);
         }
 
         /**
@@ -6229,6 +6240,7 @@ public final class Settings {
             VALIDATORS.put(PULSE_AMBIENT_LIGHT_PULSE_FOR_ALL, PULSE_AMBIENT_LIGHT_PULSE_FOR_ALL_VALIDATOR);
             VALIDATORS.put(AMBIENT_NOTIFICATION_LIGHT_ACCENT_LEFT, AMBIENT_NOTIFICATION_LIGHT_ACCENT_LEFT_VALIDATOR);
             VALIDATORS.put(AMBIENT_NOTIFICATION_LIGHT_ACCENT_RIGHT, AMBIENT_NOTIFICATION_LIGHT_ACCENT_RIGHT_VALIDATOR);
+            VALIDATORS.put(PULSE_AMBIENT_LIGHT_PULSE_FOR_ALL_REPEAT, PULSE_AMBIENT_LIGHT_PULSE_FOR_ALL_REPEAT_VALIDATOR);
         }
 
         /**
