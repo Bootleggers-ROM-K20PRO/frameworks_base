@@ -78,7 +78,7 @@ import java.io.PrintWriter;
 import java.text.NumberFormat;
 import java.util.IllegalFormatConversionException;
 
-import vendor.lineage.biometrics.fingerprint.inscreen.V1_0.IFingerprintInscreen;
+import vendor.lineage.biometrics.fingerprint.inscreen.V1_1.IFingerprintInscreen;
 
 /**
  * Controls the indications and error messages shown on the Keyguard
