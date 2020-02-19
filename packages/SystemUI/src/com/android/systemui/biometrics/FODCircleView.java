@@ -521,6 +521,8 @@ public class FODCircleView extends ImageView implements TunerService.Tunable, Co
 
         mIsShowing = true;
 
+        updatePosition();
+
         dispatchShow();
         setDim(true);
         mHandler.postDelayed(() -> { switchHbm(true); } , 250);
