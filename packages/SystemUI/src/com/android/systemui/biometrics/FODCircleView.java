@@ -95,6 +95,7 @@ public class FODCircleView extends ImageView implements ConfigurationListener {
 
     private FODAnimation mFODAnimation;
     private boolean mIsRecognizingAnimEnabled;
+    private boolean mShouldRemoveIconOnAOD;
 
     private int mSelectedIcon;
     private final int[] ICON_STYLES = {
@@ -167,6 +168,12 @@ public class FODCircleView extends ImageView implements ConfigurationListener {
                 mBurnInProtectionTimer.schedule(new BurnInProtectionTask(), 0, 60 * 1000);
             } else if (mBurnInProtectionTimer != null) {
                 mBurnInProtectionTimer.cancel();
+            }
+
+            if (mShouldRemoveIconOnAOD && dreaming) {
+                setImageResource(0);
+            } else if(mShouldRemoveIconOnAOD && !dreaming) {
+                setImageResource(ICON_STYLES[mSelectedIcon]);
             }
         }
 
@@ -459,7 +466,9 @@ public class FODCircleView extends ImageView implements ConfigurationListener {
     public void hideCircle() {
         mIsCircleShowing = false;
 
-        setImageResource(ICON_STYLES[mSelectedIcon]);
+        if (!mIsDreaming && !mShouldRemoveIconOnAOD) {
+            setImageResource(ICON_STYLES[mSelectedIcon]);
+        }
 
         invalidate();
 
@@ -517,6 +526,8 @@ public class FODCircleView extends ImageView implements ConfigurationListener {
                 Settings.System.FOD_ICON, 0);
         mPressedIcon = Settings.System.getInt(mContext.getContentResolver(),
                 Settings.System.FOD_PRESSED_STATE, 0);
+        mShouldRemoveIconOnAOD = Settings.System.getInt(mContext.getContentResolver(),
+                Settings.System.SCREEN_OFF_FOD, 0) != 0;
         if (mFODAnimation != null) {
             mFODAnimation.update();
         }

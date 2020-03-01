@@ -5813,6 +5813,12 @@ public final class Settings {
         public static final String ADAPTIVE_PLAYBACK_TIMEOUT = "adaptive_playback_timeout";
 
         /**
+         * Screen off FOD
+         * @hide
+         */
+        public static final String SCREEN_OFF_FOD = "screen_off_fod";
+
+        /**
          * @hide
          */
         public static final String ROAMING_INDICATOR_ICON = "roaming_indicator_icon";
