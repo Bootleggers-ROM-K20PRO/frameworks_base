@@ -44,9 +44,10 @@ import android.widget.ImageView;
 
 import com.android.keyguard.KeyguardUpdateMonitor;
 import com.android.keyguard.KeyguardUpdateMonitorCallback;
-import com.android.systemui.Dependency;
 import com.android.systemui.R;
-import com.android.systemui.tuner.TunerService;
+import com.android.systemui.Dependency;
+import com.android.systemui.statusbar.policy.ConfigurationController;
+import com.android.systemui.statusbar.policy.ConfigurationController.ConfigurationListener;
 
 import vendor.lineage.biometrics.fingerprint.inscreen.V1_0.IFingerprintInscreen;
 import vendor.lineage.biometrics.fingerprint.inscreen.V1_0.IFingerprintInscreenCallback;
@@ -55,9 +56,7 @@ import java.util.NoSuchElementException;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class FODCircleView extends ImageView implements TunerService.Tunable {
-    private final String SCREEN_BRIGHTNESS = "system:" + Settings.System.SCREEN_BRIGHTNESS;
-
+public class FODCircleView extends ImageView implements ConfigurationListener {
     private final int mPositionX;
     private final int mPositionY;
     private final int mSize;
@@ -72,8 +71,6 @@ public class FODCircleView extends ImageView implements TunerService.Tunable {
 
     private int mDreamingOffsetX;
     private int mDreamingOffsetY;
-
-    private int mCurrentBrightness;
 
     private boolean mIsBouncer;
     private boolean mIsDreaming;
@@ -189,6 +186,8 @@ public class FODCircleView extends ImageView implements TunerService.Tunable {
         }
     };
 
+    private boolean mCutoutMasked;
+    private int mStatusbarHeight;
 
     public FODCircleView(Context context) {
         super(context);
@@ -241,18 +240,14 @@ public class FODCircleView extends ImageView implements TunerService.Tunable {
         mUpdateMonitor = KeyguardUpdateMonitor.getInstance(context);
         mUpdateMonitor.registerCallback(mMonitorCallback);
 
-        Dependency.get(TunerService.class).addTunable(this, SCREEN_BRIGHTNESS);
+        updateCutoutFlags();
+
+        Dependency.get(ConfigurationController.class).addCallback(this);
         mPowerManager = context.getSystemService(PowerManager.class);
         mWakeLock = mPowerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
                 FODCircleView.class.getSimpleName());
 
         mFODAnimation = new FODAnimation(context, mPositionX, mPositionY);
-    }
-
-    @Override
-    public void onTuningChanged(String key, String newValue) {
-        mCurrentBrightness = newValue != null ?  Integer.parseInt(newValue) : 0;
-        updateDim();
     }
 
     @Override
@@ -440,22 +435,23 @@ public class FODCircleView extends ImageView implements TunerService.Tunable {
         defaultDisplay.getRealSize(size);
 
         int rotation = defaultDisplay.getRotation();
+        int cutoutMaskedExtra = mCutoutMasked ? mStatusbarHeight : 0;
 
         switch (rotation) {
             case Surface.ROTATION_0:
                 mParams.x = mPositionX;
-                mParams.y = mPositionY;
+                mParams.y = mPositionY - cutoutMaskedExtra;
                 break;
             case Surface.ROTATION_90:
                 mParams.x = mPositionY;
-                mParams.y = mPositionX;
+                mParams.y = mPositionX - cutoutMaskedExtra;
                 break;
             case Surface.ROTATION_180:
                 mParams.x = mPositionX;
-                mParams.y = size.y - mPositionY - mSize;
+                mParams.y = size.y - mPositionY - mSize - cutoutMaskedExtra;
                 break;
             case Surface.ROTATION_270:
-                mParams.x = size.x - mPositionY - mSize - mNavigationBarSize;
+                mParams.x = size.x - mPositionY - mSize - mNavigationBarSize - cutoutMaskedExtra;
                 mParams.y = mPositionX;
                 break;
             default:
@@ -464,7 +460,7 @@ public class FODCircleView extends ImageView implements TunerService.Tunable {
 
         if (mIsKeyguard) {
             mParams.x = mPositionX;
-            mParams.y = mPositionY;
+            mParams.y = mPositionY - cutoutMaskedExtra;
         }
 
         if (mIsDreaming) {
@@ -478,11 +474,13 @@ public class FODCircleView extends ImageView implements TunerService.Tunable {
 
     private void updateDim() {
         if (mIsCircleShowing) {
+            int curBrightness = Settings.System.getInt(getContext().getContentResolver(),
+                    Settings.System.SCREEN_BRIGHTNESS, 100);
             int dimAmount = 0;
 
             IFingerprintInscreen daemon = getFingerprintInScreenDaemon();
             try {
-                dimAmount = daemon.getDimAmount(mCurrentBrightness);
+                dimAmount = daemon.getDimAmount(curBrightness);
             } catch (RemoteException e) {
                 return;
             }
@@ -530,4 +528,19 @@ public class FODCircleView extends ImageView implements TunerService.Tunable {
         }
     };
 
+    @Override
+    public void onOverlayChanged() {
+        updateCutoutFlags();
+    }
+
+    private void updateCutoutFlags() {
+        mStatusbarHeight = getContext().getResources().getDimensionPixelSize(
+                com.android.internal.R.dimen.status_bar_height_portrait);
+        boolean cutoutMasked = getContext().getResources().getBoolean(
+                com.android.internal.R.bool.config_maskMainBuiltInDisplayCutout);
+        if (mCutoutMasked != cutoutMasked){
+            mCutoutMasked = cutoutMasked;
+            updatePosition();
+        }
+    }
 }
