@@ -264,17 +264,6 @@ public class FODCircleView extends ImageView implements ConfigurationListener, T
     }
 
     @Override
-    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        super.onLayout(changed, left, top, right, bottom);
-
-        if (mIsCircleShowing) {
-            dispatchPress();
-        } else {
-            dispatchRelease();
-        }
-    }
-
-    @Override
     public boolean onTouchEvent(MotionEvent event) {
         float x = event.getAxisValue(MotionEvent.AXIS_X);
         float y = event.getAxisValue(MotionEvent.AXIS_Y);
@@ -371,6 +360,7 @@ public class FODCircleView extends ImageView implements ConfigurationListener, T
         updateDim();
         updateBoost();
         updateAlpha();
+        dispatchPress();
 
         setImageResource(PRESSED_STYLES[mPressedIcon]);
         invalidate();
@@ -382,8 +372,11 @@ public class FODCircleView extends ImageView implements ConfigurationListener, T
         setImageResource(ICON_STYLES[mSelectedIcon]);
         invalidate();
 
+        dispatchRelease();
+
         updateBoost();
         updateDim();
+
         updateAlpha();
 
         setKeepScreenOn(false);
