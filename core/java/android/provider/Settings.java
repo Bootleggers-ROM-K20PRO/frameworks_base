@@ -5818,6 +5818,8 @@ public final class Settings {
          */
         public static final String SCREEN_OFF_FOD = "screen_off_fod";
 
+        private static final Validator SCREEN_OFF_FOD_VALIDATOR = BOOLEAN_VALIDATOR;
+
         /**
          * @hide
          */
@@ -6062,6 +6064,7 @@ public final class Settings {
             QS_PANEL_BG_USE_WALL,
             QS_PANEL_BG_USE_FW,
             QS_PANEL_BG_USE_ACCENT,
+            SCREEN_OFF_FOD,
             QS_PANEL_BG_USE_NEW_TINT,
         };
 
@@ -6492,6 +6495,7 @@ public final class Settings {
             VALIDATORS.put(QS_PANEL_BG_USE_WALL, QS_PANEL_BG_USE_WALL_VALIDATOR);
             VALIDATORS.put(QS_PANEL_BG_USE_FW, QS_PANEL_BG_USE_FW_VALIDATOR);
             VALIDATORS.put(QS_PANEL_BG_USE_ACCENT, QS_PANEL_BG_USE_ACCENT_VALIDATOR);
+            VALIDATORS.put(SCREEN_OFF_FOD, SCREEN_OFF_FOD_VALIDATOR);
             VALIDATORS.put(QS_PANEL_BG_USE_NEW_TINT, QS_PANEL_BG_USE_NEW_TINT_VALIDATOR);
         }
 
