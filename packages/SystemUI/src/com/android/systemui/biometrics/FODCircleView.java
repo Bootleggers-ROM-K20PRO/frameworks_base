@@ -170,10 +170,9 @@ public class FODCircleView extends ImageView implements ConfigurationListener {
                 mBurnInProtectionTimer.cancel();
             }
 
-            if (mShouldRemoveIconOnAOD && dreaming) {
-                setImageResource(0);
-            } else if(mShouldRemoveIconOnAOD && !dreaming) {
-                setImageResource(ICON_STYLES[mSelectedIcon]);
+            if (mShouldRemoveIconOnAOD) {
+                setImageResource(dreaming ? 0 : ICON_STYLES[mSelectedIcon]);
+                invalidate();
             }
         }
 
@@ -465,6 +464,7 @@ public class FODCircleView extends ImageView implements ConfigurationListener {
 
     public void hideCircle() {
         mIsCircleShowing = false;
+        updateStyle();
 
         if (!mIsDreaming && !mShouldRemoveIconOnAOD) {
             setImageResource(ICON_STYLES[mSelectedIcon]);
