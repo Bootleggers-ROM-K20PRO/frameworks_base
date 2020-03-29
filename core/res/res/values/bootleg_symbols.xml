@@ -137,7 +137,7 @@
     <!-- Class name of screen off fod handler -->
     <java-symbol type="string" name="config_fodScreenOffHandlerClass" />
 
-    <!-- Whether to send camera status intent -->
-    <java-symbol type="bool" name="config_sendCameraStatusIntent" />
+    <!-- Component name of popup camera service -->
+    <java-symbol type="string" name="config_popUpCameraServiceComponentName" />
 
 </resources>
