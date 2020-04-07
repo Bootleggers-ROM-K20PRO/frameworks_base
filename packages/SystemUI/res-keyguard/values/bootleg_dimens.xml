@@ -11,7 +11,9 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+	<dimen name="clock_oronos_outline_size">4dp</dimen>
 
     <!-- The margin between Emergency Carrier area and pattern/pin
          view to incorporate the FOD icon -->
