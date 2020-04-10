@@ -10667,12 +10667,6 @@ public final class Settings {
         private static final Validator ADVANCED_REBOOT_VALIDATOR = BOOLEAN_VALIDATOR;
 
         /**
-         * Whether to show the brightness slider in quick settings panel
-         * @hide
-         */
-        public static final String QS_SHOW_BRIGHTNESS_SLIDER = "qs_show_brightness_slider";
-
-        /**
          * Setting to allow setting rounded corner size and content padding
          */
         public static final String SYSUI_ROUNDED_SIZE = "sysui_rounded_size";
