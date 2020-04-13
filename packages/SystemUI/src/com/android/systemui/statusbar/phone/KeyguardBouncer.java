@@ -93,6 +93,7 @@ public class KeyguardBouncer {
     private boolean mIsAnimatingAway;
     private boolean mIsScrimmed;
     private ViewGroup mLockIconContainer;
+    private boolean mUnlockWithoutBouncer = false;
 
     public KeyguardBouncer(Context context, ViewMediatorCallback callback,
             LockPatternUtils lockPatternUtils, ViewGroup container,
@@ -167,6 +168,11 @@ public class KeyguardBouncer {
         // This condition may indicate an error on Android, so log it.
         if (!allowDismissKeyguard) {
             Slog.w(TAG, "User can't dismiss keyguard: " + activeUserId + " != " + keyguardUserId);
+        }
+
+        if (mUnlockWithoutBouncer) {
+            mUnlockWithoutBouncer = false;
+            return;
         }
 
         mShowingSoon = true;
@@ -286,6 +292,9 @@ public class KeyguardBouncer {
     public void showWithDismissAction(OnDismissAction r, Runnable cancelAction) {
         ensureView();
         mKeyguardView.setOnDismissAction(r, cancelAction);
+        mUnlockWithoutBouncer = Settings.Secure.getInt(mContext.getContentResolver(),
+                Settings.Secure.UNLOCK_WITHOUT_BOUNCER, 0) != 0
+                && mKeyguardUpdateMonitor.isUnlockingWithBiometricAllowed();
         show(false /* resetSecuritySelection */);
     }
 
