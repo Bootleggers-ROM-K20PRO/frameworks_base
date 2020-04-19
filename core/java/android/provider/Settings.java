@@ -4640,16 +4640,6 @@ public final class Settings {
                 BOOLEAN_VALIDATOR;
 
         /**
-         * Defines the screen-off animation to display
-         * @hide
-         */
-        public static final String SCREEN_OFF_ANIMATION = "screen_off_animation";
-
-        /** @hide */
-        private static final Validator SCREEN_OFF_ANIMATION_VALIDATOR =
-                ANY_INTEGER_VALIDATOR;
-
-        /**
          * Whether to display music track title within the music qs tile
          * @hide
          */
@@ -5987,7 +5977,6 @@ public final class Settings {
             USE_OLD_MOBILETYPE,
             NOTIFICATION_LIGHT_PULSE,
             FINGERPRINT_SUCCESS_VIB,
-            SCREEN_OFF_ANIMATION,
             LOCKSCREEN_MEDIA_METADATA,
             LOCKSCREEN_MEDIA_BLUR,
             HEADS_UP_NOTIFICATION_SNOOZE,
@@ -6220,7 +6209,6 @@ public final class Settings {
             PRIVATE_SETTINGS.add(BUTTON_BRIGHTNESS);
             PRIVATE_SETTINGS.add(PROXIMITY_ON_WAKE);
             PRIVATE_SETTINGS.add(FINGERPRINT_SUCCESS_VIB);
-            PRIVATE_SETTINGS.add(SCREEN_OFF_ANIMATION);
             PRIVATE_SETTINGS.add(NOTIFICATION_SOUND_VIB_SCREEN_ON);
             PRIVATE_SETTINGS.add(DISPLAY_CUTOUT_HIDDEN);
             PRIVATE_SETTINGS.add(FORCE_FULLSCREEN_CUTOUT_APPS);
@@ -6404,7 +6392,6 @@ public final class Settings {
             VALIDATORS.put(PROXIMITY_ON_WAKE, PROXIMITY_ON_WAKE_VALIDATOR);
             VALIDATORS.put(BUTTON_BACKLIGHT_ONLY_WHEN_PRESSED, BUTTON_BACKLIGHT_ONLY_WHEN_PRESSED_VALIDATOR);
             VALIDATORS.put(FINGERPRINT_SUCCESS_VIB, FINGERPRINT_SUCCESS_VIB_VALIDATOR);
-            VALIDATORS.put(SCREEN_OFF_ANIMATION, SCREEN_OFF_ANIMATION_VALIDATOR);
             VALIDATORS.put(NOTIFICATION_SOUND_VIB_SCREEN_ON,
                     NOTIFICATION_SOUND_VIB_SCREEN_ON_VALIDATOR);
             VALIDATORS.put(DISPLAY_CUTOUT_HIDDEN, DISPLAY_CUTOUT_HIDDEN_VALIDATOR);
