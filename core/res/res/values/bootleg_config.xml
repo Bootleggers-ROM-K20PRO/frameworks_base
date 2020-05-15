@@ -131,7 +131,4 @@
 
     <!-- Class name of screen off fod handler -->
     <string name="config_fodScreenOffHandlerClass" translatable="false"></string>
-
-    <!-- Whether to send camera status intent -->
-    <bool name="config_sendCameraStatusIntent">false</bool>
 </resources>
