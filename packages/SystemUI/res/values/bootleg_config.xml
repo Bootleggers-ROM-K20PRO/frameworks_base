@@ -11,7 +11,7 @@
 
     <!-- The default tiles to display in QuickSettings -->
     <string name="quick_settings_tiles_extra" translatable="false">
-        smartpixels,sound,music,weather
+        smartpixels,sound,music,weather,screenstabilization
     </string>
 
     <!-- The CPU temperature sensor path, defaults to empty -->
@@ -34,4 +34,7 @@
 
     <!-- Allow devices override audio panel location to the left side -->
     <bool name="config_audioPanelOnLeftSide">false</bool>
+
+    <!-- Whether to show biometric help only when failed -->
+    <bool name="config_biometricHelpShowOnlyWhenFailed">false</bool>
 </resources>

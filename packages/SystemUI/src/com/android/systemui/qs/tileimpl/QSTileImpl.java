@@ -67,11 +67,10 @@ import com.android.systemui.qs.PagedTileLayout.TilePage;
 import com.android.systemui.qs.QSHost;
 import com.android.systemui.qs.QuickStatusBarHeader;
 
-import java.io.FileDescriptor;
-import java.io.PrintWriter;
-
 import com.android.systemui.R;
 
+import java.io.FileDescriptor;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 /**
@@ -440,28 +439,43 @@ public abstract class QSTileImpl<TState extends State> implements QSTile, Lifecy
 
     public static int getColorForState(Context context, int state) {
 
-        boolean enableQsTileTinting = context.getResources().getBoolean(R.bool.config_enable_qs_tile_tinting);
+        int activeDefault = Utils.getColorAttrDefaultColor(context, android.R.attr.colorPrimary);
+
+        boolean setQsFromWall = Settings.System.getIntForUser(context.getContentResolver(),
+                    Settings.System.QS_PANEL_BG_USE_WALL, 0, UserHandle.USER_CURRENT) == 1;
+        boolean setQsFromResources = Settings.System.getIntForUser(context.getContentResolver(),
+                    Settings.System.QS_PANEL_BG_USE_FW, 1, UserHandle.USER_CURRENT) == 1;
+        boolean setQsFromAccent = Settings.System.getIntForUser(context.getContentResolver(),
+                    Settings.System.QS_PANEL_BG_USE_ACCENT, 1, UserHandle.USER_CURRENT) == 1;
+        boolean setQsUseNewTint = Settings.System.getIntForUser(context.getContentResolver(),
+                    Settings.System.QS_PANEL_BG_USE_NEW_TINT, 0, UserHandle.USER_CURRENT) == 1;
+
+        int qsBackGroundColor = Settings.System.getIntForUser(context.getContentResolver(),
+                Settings.System.QS_PANEL_BG_COLOR, activeDefault, UserHandle.USER_CURRENT);
+        int qsBackGroundColorWall = Settings.System.getIntForUser(context.getContentResolver(),
+                Settings.System.QS_PANEL_BG_COLOR_WALL, activeDefault, UserHandle.USER_CURRENT);
 
         switch (state) {
             case Tile.STATE_UNAVAILABLE:
-                if (!enableQsTileTinting) {
-                    return Utils.getDisabled(context,
+                return Utils.getDisabled(context,
                         Utils.getColorAttrDefaultColor(context, android.R.attr.textColorSecondary));
-                } else {
-                    return Utils.getDisabled(context,
-                        context.getColor(R.color.qs_tiles_unavailable_tint));
-                }
             case Tile.STATE_INACTIVE:
-                if (!enableQsTileTinting) {
-                    return Utils.getColorAttrDefaultColor(context, android.R.attr.textColorSecondary);
-                } else {
-                    return context.getColor(R.color.qs_tiles_inactive_tint);
-                }
+                return Utils.getColorAttrDefaultColor(context, android.R.attr.textColorPrimary);
             case Tile.STATE_ACTIVE:
-                if (!enableQsTileTinting) {
-                    return Utils.getColorAttrDefaultColor(context, android.R.attr.colorPrimary);
+                if (setQsFromResources) {
+                    if (setQsUseNewTint)
+                        return Utils.getColorAttrDefaultColor(context, android.R.attr.colorAccent);
+                    else
+                        return Utils.getColorAttrDefaultColor(context, android.R.attr.colorPrimary);
                 } else {
-                    return context.getColor(R.color.qs_tiles_active_tint);
+                     if (setQsFromAccent) {
+                        return context.getResources().getColor(R.color.accent_device_default_light);
+                     } else {
+                         if (setQsFromWall)
+                            return qsBackGroundColorWall;
+                         else
+                            return qsBackGroundColor;
+                     }
                 }
             default:
                 Log.e("QSTile", "Invalid state " + state);
