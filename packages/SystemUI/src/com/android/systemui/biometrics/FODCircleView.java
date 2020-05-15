@@ -69,8 +69,6 @@ import java.util.NoSuchElementException;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.android.internal.util.bootleggers.fod.FodScreenOffHandler;
-
 public class FODCircleView extends ImageView implements ConfigurationListener, TunerService.Tunable {
     private final int mPositionX;
     private final int mPositionY;
@@ -130,8 +128,6 @@ public class FODCircleView extends ImageView implements ConfigurationListener, T
         R.drawable.fod_icon_pressed_vivo_yellow_shadow
     };
 
-    private FodScreenOffHandler mFodScreenOffHandler;
-
     private IFingerprintInscreenCallback mFingerprintInscreenCallback =
             new IFingerprintInscreenCallback.Stub() {
         @Override
@@ -151,7 +147,6 @@ public class FODCircleView extends ImageView implements ConfigurationListener, T
         @Override
         public void onDreamingStateChanged(boolean dreaming) {
             mIsDreaming = dreaming;
-            dispatchFodDreamingStateChanged();
             updateAlpha();
 
             if (dreaming) {
@@ -195,7 +190,6 @@ public class FODCircleView extends ImageView implements ConfigurationListener, T
         @Override
         public void onScreenTurnedOff() {
             hide();
-            dispatchFodScreenStateChanged(false);
         }
 
         @Override
@@ -203,13 +197,6 @@ public class FODCircleView extends ImageView implements ConfigurationListener, T
             if (mUpdateMonitor.isFingerprintDetectionRunning()) {
                 show();
             }
-            dispatchFodScreenStateChanged(true);
-        }
-
-        @Override
-        public void onBiometricRunningStateChanged(boolean running,
-            BiometricSourceType biometricSourceType) {
-            dispatchFodFingerprintRunningStateChanged(running);
         }
 
         @Override
@@ -229,24 +216,6 @@ public class FODCircleView extends ImageView implements ConfigurationListener, T
             }
         }
     };
-
-    private void dispatchFodScreenStateChanged(boolean interactive){
-        if (mFodScreenOffHandler != null){
-            mFodScreenOffHandler.onScreenStateChanged(interactive);
-        }
-    }
-
-    private void dispatchFodFingerprintRunningStateChanged(boolean running){
-        if (mFodScreenOffHandler != null){
-            mFodScreenOffHandler.onFingerprintRunningStateChanged(running);
-        }
-    }
-
-    private void dispatchFodDreamingStateChanged(){
-        if (mFodScreenOffHandler != null){
-            mFodScreenOffHandler.onDreamingStateChanged(mIsDreaming);
-        }
-    }
 
     private boolean canUnlockWithFp() {
         int currentUser = ActivityManager.getCurrentUser();
@@ -271,10 +240,8 @@ public class FODCircleView extends ImageView implements ConfigurationListener, T
     private boolean mCutoutMasked;
     private int mStatusbarHeight;
 
-    public FODCircleView(Context context, FodScreenOffHandler fodScreenOffHandler) {
+    public FODCircleView(Context context) {
         super(context);
-
-        mFodScreenOffHandler = fodScreenOffHandler;
 
         IFingerprintInscreen daemon = getFingerprintInScreenDaemon();
         if (daemon == null) {

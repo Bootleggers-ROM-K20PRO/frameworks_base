@@ -131,12 +131,6 @@
     <java-symbol type="string" name="gaming_mode_enabled_toast" />
     <java-symbol type="string" name="gaming_mode_disabled_toast" />
 
-    <!-- Library path of screen off fod handler -->
-    <java-symbol type="string" name="config_fodScreenOffHandlerLib" />
-
-    <!-- Class name of screen off fod handler -->
-    <java-symbol type="string" name="config_fodScreenOffHandlerClass" />
-
     <java-symbol type="integer" name="config_screenBrightnessPulse" />
 
 </resources>
