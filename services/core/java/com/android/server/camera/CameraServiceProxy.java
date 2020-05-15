@@ -17,7 +17,6 @@ package com.android.server.camera;
 
 import android.annotation.IntDef;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -54,8 +53,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-
-import com.android.internal.util.bootleggers.popupcamera.PopUpCameraUtils;
 
 /**
  * CameraServiceProxy is the system_server analog to the camera service running in cameraserver.
@@ -131,7 +128,7 @@ public class CameraServiceProxy extends SystemService
     private final @NfcNotifyState int mNotifyNfc;
     private boolean mLastNfcPollState = true;
     private final boolean mAllowMediaUid;
-    private final String mPopUpCameraServiceComponentName;
+    private final boolean mSendCameraStatusIntent;
 
     private long mClosedEvent;
     private long mOpenEvent;
@@ -229,7 +226,7 @@ public class CameraServiceProxy extends SystemService
 
             updateActivityCount(cameraId, newCameraState, facing, clientName, apiLevel);
 
-            if (!mPopUpCameraServiceComponentName.equals("") && facing == ICameraServiceProxy.CAMERA_FACING_FRONT) {
+            if (mSendCameraStatusIntent && facing == ICameraServiceProxy.CAMERA_FACING_FRONT) {
                 switch (newCameraState) {
                    case ICameraServiceProxy.CAMERA_STATE_OPEN : {
                        mOpenEvent = SystemClock.elapsedRealtime();
@@ -265,8 +262,9 @@ public class CameraServiceProxy extends SystemService
         if (DEBUG) Slog.v(TAG, "Notify NFC state is " + nfcNotifyToString(mNotifyNfc));
         mAllowMediaUid = mContext.getResources().getBoolean(
                 com.android.internal.R.bool.config_allowMediaUidForCameraServiceProxy);
-        mPopUpCameraServiceComponentName = mContext.getResources().getString(
-                com.android.internal.R.string.config_popUpCameraServiceComponentName);
+
+        mSendCameraStatusIntent = mContext.getResources().getBoolean(
+                com.android.internal.R.bool.config_sendCameraStatusIntent);
     }
 
     @Override
@@ -343,18 +341,6 @@ public class CameraServiceProxy extends SystemService
 
             // Ensure NFC is back on
             notifyNfcService(/*enablePolling*/ true);
-        }
-    }
-
-    @Override
-    public void onBootPhase(int phase) {
-        if (phase == PHASE_BOOT_COMPLETED &&
-                !mPopUpCameraServiceComponentName.equals("")) {
-            String perm = PopUpCameraUtils.MANAGE_POPUP_CAMERA_SERVICE_PERMISSION;
-            mContext.enforceCallingOrSelfPermission(perm, "Missing or invalid popup camera service permission: " + perm);
-            Intent i = new Intent();
-            i.setComponent(ComponentName.unflattenFromString(mPopUpCameraServiceComponentName));
-            mContext.startServiceAsUser(i, UserHandle.SYSTEM);
         }
     }
 
