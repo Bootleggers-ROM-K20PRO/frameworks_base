@@ -692,6 +692,7 @@ public class FODCircleView extends ImageView implements ConfigurationListener, H
             mCutoutMasked = cutoutMasked;
             updatePosition();
         }
+   }
 
    @Override
     public boolean handleMessage(Message msg) {
@@ -703,7 +704,7 @@ public class FODCircleView extends ImageView implements ConfigurationListener, H
                 switchHbm(true);
             } break;
 
-        }
+         }
         return true;
     }
 }
