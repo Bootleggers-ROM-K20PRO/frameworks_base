@@ -11,7 +11,7 @@
 
     <!-- The default tiles to display in QuickSettings -->
     <string name="quick_settings_tiles_extra" translatable="false">
-        smartpixels,sound,music,weather,screenstabilization
+        caffeine,dataswitch,heads_up,screenrecord,smartpixels,sound,soundsearch,sync,music,vpn,weather,screenstabilization
     </string>
 
     <!-- The CPU temperature sensor path, defaults to empty -->
@@ -37,4 +37,7 @@
 
     <!-- Whether to show biometric help only when failed -->
     <bool name="config_biometricHelpShowOnlyWhenFailed">false</bool>
+
+    <!-- Allow devices to enforce the H265 encoder for screen recordings -->
+    <bool name="config_useNewScreenRecEncoder">true</bool>
 </resources>
